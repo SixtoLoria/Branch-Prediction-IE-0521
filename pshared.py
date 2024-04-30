@@ -1,6 +1,7 @@
 class pshared:
-    def __init__(self):
+    def __init__(self, bits_to_index, local_history_size):
         #Escriba aquí el init de la clase
+        self.local_history = 0
         self.total_predictions = 0
         self.total_taken_pred_taken = 0
         self.total_taken_pred_not_taken = 0

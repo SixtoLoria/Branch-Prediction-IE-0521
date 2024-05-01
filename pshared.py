@@ -37,9 +37,9 @@ class pshared:
 
     def predict(self, PC):
         index = int(PC) % self.size_of_branch_table
-        branch_table_entry = self.branch_table[index]
-        global_table_entry = self.global_history_table[branch_table_entry]
-        if global_table_entry in [2,3]:
+        branch_table_entry = self.branch_table[index] #Tomo el contenido de acuerdo al indice
+        global_table_entry = self.global_history_table[branch_table_entry] #Tomo el contenido de acuerdo brancn_table_enry
+        if global_table_entry in [2,3]: # Rabgo entre 2 y 3 retorna T sino N 
             return "T"
         else:
             return "N"
@@ -49,41 +49,47 @@ class pshared:
         branch_table_entry = self.branch_table[index]
         global_table_entry = self.global_history_table[branch_table_entry]
 
-        # Update table
-        if (result == "N" and global_table_entry != 0 ):
+        # Update table de historia global 
+        if (result == "N" and 1 <= global_table_entry <=3  ):
             updated_global_table_entry = global_table_entry - 1
-        
-                       
-        elif (result == "T" and global_table_entry ==3):
-            updated_global_table_entry = global_table_entry
+                     
+        elif (result == "T" and 0 <= global_table_entry <= 2):
+            updated_global_table_entry = global_table_entry +1
 
-        elif (result == "N" and global_table_entry == 0):
-
-            updated_global_table_entry = global_table_entry
         else:
-            updated_global_table_entry = global_table_entry + 1
+            updated_global_table_entry = global_table_entry 
         #Actualizo la tabla de historia global con los resultados anteriores
         self.global_history_table[branch_table_entry] = updated_global_table_entry 
 
         # Update stats
     #Update stats
         if result == "T" and result == prediction:
+            #Aumento mis branches tomados predichos correctamente
             self.total_taken_pred_taken += 1
+            #Desplazo a la izquierda y inserto un 0 en el bit más significativo
             self.branch_table[index] =self.branch_table[index] << 1
+            #Desplazo a la izquierda y inserto un 0 en el bit más significativo
             self.branch_table[index] += 1
 
         elif result == "T" and result != prediction:
+            #Aumento mis branches tomados predichos incorrectamente
             self.total_taken_pred_not_taken += 1
+            #Desplazo a la izquierda y inserto un 0 en el bit menos significativo
             self.branch_table[index] =self.branch_table[index] << 1
+            #Cambio el bit menos significativo por un 1
             self.branch_table[index] += 1
 
         elif result == "N" and result == prediction:
+            #Aumento mis branches no tomados predichos correctamente
             self.total_not_taken_pred_not_taken += 1
+            #Desplazo a la izquierda y inserto un 0 en el bit menos significativo
             self.branch_table[index] =self.branch_table[index] << 1
             
 
         else:
+            #Aumento mis branches no tomados predichos incorrectamente
             self.total_not_taken_pred_taken += 1
+            #Desplazo a la izquierda y inserto un 0 en el bit menos significativo
             self.branch_table[index] =self.branch_table[index] << 1
 
         self.total_predictions += 1

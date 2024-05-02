@@ -1,8 +1,8 @@
 class perceptron:
     def __init__(self):
-        #Escriba aquí el init de la clase
-        self.num_features = num_features
-        self.weights = [0] * num_features
+        # Inicialización de pesos y sesgo
+        self.num_features = num_features        # Numero de caracteristicas que tendra el percertron
+        self.weights = [0] * num_features       # Inicializando pesos
         self.bias = 0
         self.total_predictions = 0
         self.total_taken_pred_taken = 0
@@ -11,10 +11,12 @@ class perceptron:
         self.total_not_taken_pred_not_taken = 0
 
     def print_info(self):
+        # Información sobre el predictor
         print("Parámetros del predictor:")
         print("\tTipo de predictor:\t\t\tPerceptron")
 
     def print_stats(self):
+        # Estadísticas de la simulación
         print("Resultados de la simulación")
         print("\t# branches:\t\t\t\t\t\t"+str(self.total_predictions))
         print("\t# branches tomados predichos correctamente:\t\t"+str(self.total_taken_pred_taken))
@@ -25,12 +27,11 @@ class perceptron:
         formatted_perc = "{:.3f}".format(perc_correct)
         print("\t% predicciones correctas:\t\t\t\t"+str(formatted_perc)+"%")
 
+
     def predict(self, PC):
-        #Escriba aquí el código para predecir
-        #La siguiente línea es solo para que funcione la prueba
-        #Quítela para implementar su código
-        return "T"
-  
+        # Predicción basada en el producto punto de pesos y PC
+        dot_product = sum(w*f for w, f in zip(self.weights, PC)) + self.bias
+        return "T" if dot_product > 0 else "N"
 
     def update(self, PC, result, prediction):
         #Escriba aquí el código para actualizar

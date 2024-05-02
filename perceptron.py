@@ -1,6 +1,9 @@
 class perceptron:
     def __init__(self):
         #Escriba aquí el init de la clase
+        self.num_features = num_features
+        self.weights = [0] * num_features
+        self.bias = 0
         self.total_predictions = 0
         self.total_taken_pred_taken = 0
         self.total_taken_pred_not_taken = 0

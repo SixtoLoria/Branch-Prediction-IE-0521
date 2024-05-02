@@ -14,7 +14,9 @@ class pshared:
         self.total_taken_pred_not_taken = 0
         self.total_not_taken_pred_taken = 0
         self.total_not_taken_pred_not_taken = 0
-    # Informacion a imprimir.
+        
+        
+    # Informacion del predictor.
     def print_info(self):
         print("Parámetros del predictor:")
         print("\tTipo de predictor:\t\t\tP-shared")
@@ -22,6 +24,8 @@ class pshared:
         print("\tTamaño de los registros de historia local:\t\t\t"+str(self.local_history_size))
         print("\tEntradas en el pattern table:\t\t\t\t\t"+str(2**self.local_history_size))
 
+
+    # Mostrar resultados
     def print_stats(self):
         print("Resultados de la simulación")
         print("\t# branches:\t\t\t\t\t\t"+str(self.total_predictions))
@@ -32,6 +36,7 @@ class pshared:
         perc_correct = 100*(self.total_taken_pred_taken+self.total_not_taken_pred_not_taken)/self.total_predictions
         formatted_perc = "{:.3f}".format(perc_correct)
         print("\t% predicciones correctas:\t\t\t\t"+str(formatted_perc)+"%")
+
 
     def predict(self, PC):
         #Escriba aquí el código para predecir

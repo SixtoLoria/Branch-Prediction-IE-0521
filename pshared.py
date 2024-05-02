@@ -19,9 +19,9 @@ class pshared:
 
     def print_info(self):
         print("Parámetros del predictor:")
-        print("\tTipo de predictor:\t\t\tP-Share")
-        print("\tTamaño de la tabla de patrones:\t" + str(self.size_of_branch_table))
-        print("\tTamaño del registro de historia global:\t" + str(self.global_history_size))
+        print("\tTipo de predictor:\t\t\t\tP-Share")
+        print("\tTamaño de la tabla de patrones:\t\t\t" + str(self.size_of_branch_table))
+        print("\tTamaño del registro de historia global:\t\t" + str(self.global_history_size))
         print("\tTamaño de la tabla de la historia global:\t" + str(self.size_global_history_table))
 
     def print_stats(self):
@@ -30,7 +30,7 @@ class pshared:
         print("\t# branches tomados predichos correctamente:\t\t"+str(self.total_taken_pred_taken))
         print("\t# branches tomados predichos incorrectamente:\t\t"+str(self.total_taken_pred_not_taken))
         print("\t# branches no tomados predichos correctamente:\t\t"+str(self.total_not_taken_pred_not_taken))
-        print("\t# branches no tomados predichos incorrectamente:\t"+str(self.total_not_taken_pred_taken))
+        print("\t# branches no tomados predichos incorrectamente:\t\t"+str(self.total_not_taken_pred_taken))
         perc_correct = 100*(self.total_taken_pred_taken+self.total_not_taken_pred_not_taken)/self.total_predictions
         formatted_perc = "{:.3f}".format(perc_correct)
         print("\t% predicciones correctas:\t\t\t\t"+str(formatted_perc)+"%")
@@ -66,7 +66,7 @@ class pshared:
         if result == "T" and result == prediction:
             #Aumento mis branches tomados predichos correctamente
             self.total_taken_pred_taken += 1
-            #Desplazo a la izquierda y inserto un 0 en el bit más significativo
+            #Desplazo a la izquierda e inserto un 0 en el bit más significativo
             self.branch_table[index] =self.branch_table[index] << 1
             #Desplazo a la izquierda y inserto un 0 en el bit más significativo
             self.branch_table[index] += 1
@@ -74,7 +74,7 @@ class pshared:
         elif result == "T" and result != prediction:
             #Aumento mis branches tomados predichos incorrectamente
             self.total_taken_pred_not_taken += 1
-            #Desplazo a la izquierda y inserto un 0 en el bit menos significativo
+            #Desplazo a la izquierda e inserto un 0 en el bit menos significativo
             self.branch_table[index] =self.branch_table[index] << 1
             #Cambio el bit menos significativo por un 1
             self.branch_table[index] += 1

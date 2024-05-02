@@ -1,9 +1,11 @@
 class perceptron:
-    def __init__(self):
+    def __init__(self, num_features):
         # Inicialización de pesos y sesgo
         self.num_features = num_features        # Numero de caracteristicas que tendra el percertron
         self.weights = [0] * num_features       # Inicializando pesos
         self.bias = 0
+        
+        # Inicialización de estadísticas
         self.total_predictions = 0
         self.total_taken_pred_taken = 0
         self.total_taken_pred_not_taken = 0
@@ -34,7 +36,20 @@ class perceptron:
         return "T" if dot_product > 0 else "N"
 
     def update(self, PC, result, prediction):
-        #Escriba aquí el código para actualizar
-        #La siguiente línea es solo para que funcione la prueba
-        #Quítela para implementar su código
-        a = PC
+        # Actualización de estadísticas
+        if result == "T" and prediction == "T":
+            self.total_taken_pred_taken += 1
+        elif result == "T" and prediction == "N":
+            self.total_taken_pred_not_taken += 1
+        elif result == "N" and prediction == "T":
+            self.total_not_taken_pred_taken += 1
+        elif result == "N" and prediction == "N":
+            self.total_not_taken_pred_not_taken += 1
+    
+        self.total_predictions += 1
+
+        # Actualización de pesos y sesgo si la predicción fue incorrecta
+        if result != prediction:
+            for i in range(self.num_features):
+                self.weights[i] += PC[i] if result == "T" else -PC[i]
+            self.bias += 1 if result == "T" else -1

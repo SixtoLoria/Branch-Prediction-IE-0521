@@ -39,14 +39,54 @@ class pshared:
 
 
     def predict(self, PC):
-        #Escriba aquí el código para predecir
-        #La siguiente línea es solo para que funcione la prueba
-        #Quítela para implementar su código
-        return "T"
+        index= int(PC) % self.size_of_branch_table #Esta es la primera tabla
+        branch_table_pattern= self.branch_table[index]  #Aqui estoy tomando lo que esta saliendo de la primer tabla
+        branch_table_entry = self.branch_table_patrones[branch_table_pattern]  #Aqui estoy tomando lo que esta saliendo de la segunda tabla.
+        if branch_table_entry in [0,1]:
+            return "N"
+        else:
+            return "T"
   
 
     def update(self, PC, result, prediction):
-        #Escriba aquí el código para actualizar
-        #La siguiente línea es solo para que funcione la prueba
-        #Quítela para implementar su código
-        a = PC
+        index= int(PC) % self.size_of_branch_table #Esta es la primera tabla
+        branch_table_pattern= self.branch_table[index]  #Aqui estoy tomando lo que esta saliendo de la primer tabla
+        branch_table_entry = self.branch_table_patrones[branch_table_pattern]  #
+        #Update entry accordingly
+        if branch_table_entry == 0 and result == "N":
+            updated_branch_table_entry = branch_table_entry
+            
+        elif branch_table_entry != 0 and result == "N":
+            updated_branch_table_entry = branch_table_entry - 1
+            
+        elif branch_table_entry == 3 and result == "T":
+            updated_branch_table_entry = branch_table_entry
+            
+        else:
+            updated_branch_table_entry = branch_table_entry + 1
+        self.branch_table_patrones[branch_table_pattern] = updated_branch_table_entry   #Actualizo la tercer tabla.
+        
+        #Update stats
+        #En todos los casos se le hace un sll de un 1, pero cuando result == "T" se le suma a la segunda tabla.
+        #Los demás casos es un 0, pero no hace falta ponerlo.
+        if result == "T" and result == prediction:
+            self.total_taken_pred_taken += 1
+            self.branch_table[index]= self.branch_table[index] <<1 
+            self.branch_table[index] += 1
+
+        elif result == "T" and result != prediction:
+            self.total_taken_pred_not_taken += 1
+            self.branch_table[index]= self.branch_table[index] <<1
+            self.branch_table[index] +=1
+
+        elif result == "N" and result == prediction:
+            self.total_not_taken_pred_not_taken += 1
+            self.branch_table[index]= self.branch_table[index] <<1
+
+        else:
+            self.total_not_taken_pred_taken += 1
+            self.branch_table[index]= self.branch_table[index] <<1
+
+        self.total_predictions += 1
+        #Aquí se limita la cantidad de bits y se evita que se salga del rango esperado.
+        self.branch_table[index]=self.branch_table[index]%self.size_of_local_history

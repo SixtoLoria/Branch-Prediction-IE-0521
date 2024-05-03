@@ -1,16 +1,19 @@
 class ie0521_bp:
-    def __init__(self):
+    def __init__(self, bits_to_index, global_history_size):
+        self.bits_to_index = bits_to_index
+        self.global_history_size = global_history_size
         self.total_predictions = 0
         self.total_taken_pred_taken = 0
         self.total_taken_pred_not_taken = 0
         self.total_not_taken_pred_taken = 0
         self.total_not_taken_pred_not_taken = 0
-        self.branch_history_table = {}  # Tabla para almacenar el historial de las predicciones
-        
+        self.predictor_table = [2] * (2 ** bits_to_index)  # Inicializa la tabla con un sesgo hacia la toma
 
     def print_info(self):
         print("Parámetros del predictor:")
-        print("\tTipo de predictor:\t\t\tPredictor de bifurcación de dos bits")
+        print("\tTipo de predictor:\t\t\tPredictor de bifurcación basado en contador saturado de dos bits")
+        print("\tBits de PC para indexar:\t\t\t" + str(self.bits_to_index))
+        print("\tTamaño del registro de historia global:\t\t" + str(self.global_history_size))
 
     def print_stats(self):
         print("Resultados de la simulación")
@@ -24,24 +27,22 @@ class ie0521_bp:
         print("\t% predicciones correctas:\t\t\t\t"+str(formatted_perc)+"%")
 
     def predict(self, PC):
-        if PC not in self.branch_history_table:
-            return "T"  # Predice que se tomará si no hay historial
-        elif self.branch_history_table[PC] > 1:
-            return "T"  # Predice que se tomará si el contador es 2 o 3
-        else:
-            return "N"  # Predice que no se tomará si el contador es 0 o 1
-  
+        # Convierte PC a un entero si es un string
+        if isinstance(PC, str):
+            PC = int(PC)
+
+        index = PC & (len(self.predictor_table) - 1)
+        return "T" if self.predictor_table[index] >= 2 else "N"
 
     def update(self, PC, result, prediction):
-        if PC not in self.branch_history_table:
-            self.branch_history_table[PC] = 2 if result == "T" else 0
+        # Convierte PC a un entero si es un string
+        if isinstance(PC, str):
+            PC = int(PC)
+        index = PC & (len(self.predictor_table) - 1)
+        if result == "T":
+            self.predictor_table[index] = min(self.predictor_table[index] + 1, 3)
         else:
-            if result == "T":
-                if self.branch_history_table[PC] < 3:
-                    self.branch_history_table[PC] += 1
-            else:
-                if self.branch_history_table[PC] > 0:
-                    self.branch_history_table[PC] -= 1
+            self.predictor_table[index] = max(self.predictor_table[index] - 1, 0)
 
         self.total_predictions += 1
         if result == "T":

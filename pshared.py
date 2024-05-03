@@ -39,7 +39,7 @@ class pshared:
         index = int(PC) % self.size_of_branch_table
         branch_table_entry = self.branch_table[index] #Tomo el contenido de acuerdo al indice
         global_table_entry = self.global_history_table[branch_table_entry] #Tomo el contenido de acuerdo brancn_table_enry
-        if global_table_entry in [2,3]: # Rabgo entre 2 y 3 retorna T sino N 
+        if global_table_entry in [2,3]: # Rango entre 2 y 3 retorna T sino N 
             return "T"
         else:
             return "N"

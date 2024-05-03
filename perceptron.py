@@ -1,11 +1,24 @@
+import math
+import numpy as np
+
 class perceptron:
-    def __init__(self, num_features):
-        # Inicialización de pesos y sesgo
-        self.num_features = num_features        # Numero de caracteristicas que tendra el percertron
-        self.weights = [0] * num_features       # Inicializando pesos
-        self.bias = 0
+    def __init__(self, bits_to_index, global_history_size):
         
-        # Inicialización de estadísticas
+        self.bits_to_index = bits_to_index
+        self.global_history_size = global_history_size
+        self.size_perceptrons_table = 2**bits_to_index
+
+      
+        self.perceptrons_table = [[] for _ in range(2**bits_to_index)]
+        for i in range(self.size_perceptrons_table):
+            self.perceptrons_table[i] = [0]*(global_history_size + 1)
+        #Creando tabla de historia global con bits inicializados a 0
+        self.global_history_table = ""
+        for i in range(global_history_size):
+            self.global_history_table += "0"       
+        #calculando el umbral de acuerdo a tamaño de la historial global
+        self.threshold = math.floor(1.93 * global_history_size + 14)               
+    
         self.total_predictions = 0
         self.total_taken_pred_taken = 0
         self.total_taken_pred_not_taken = 0
@@ -13,12 +26,12 @@ class perceptron:
         self.total_not_taken_pred_not_taken = 0
 
     def print_info(self):
-        # Información sobre el predictor
         print("Parámetros del predictor:")
-        print("\tTipo de predictor:\t\t\tPerceptron")
+        print("\tTipo de predictor:\t\t\t\tPerceptron")
+        print("\tBits de PC para indexar:\t\t\t" + str(self.bits_to_index))
+        print("\tTamaño del registro de historia global:\t\t" + str(self.global_history_size))
 
     def print_stats(self):
-        # Estadísticas de la simulación
         print("Resultados de la simulación")
         print("\t# branches:\t\t\t\t\t\t"+str(self.total_predictions))
         print("\t# branches tomados predichos correctamente:\t\t"+str(self.total_taken_pred_taken))
@@ -29,27 +42,61 @@ class perceptron:
         formatted_perc = "{:.3f}".format(perc_correct)
         print("\t% predicciones correctas:\t\t\t\t"+str(formatted_perc)+"%")
 
-
     def predict(self, PC):
-        # Predicción basada en el producto punto de pesos y PC
-        dot_product = sum(w*f for w, f in zip(self.weights, PC)) + self.bias
-        return "T" if dot_product > 0 else "N"
+        index = int(PC) % self.size_perceptrons_table
+        perceptron_weights = self.perceptrons_table[index]
+        
+        
+        #Obteniendo w0
+        self.y = perceptron_weights[0]*1
+        for i in range(1,self.global_history_size+1):
+            self.y += perceptron_weights[i]*self.reg(self.global_history_table[-i]) #y=w0 +wi*xi (i=0 hasta globlal_history_size))
 
+ 
+        if self.y >= 0:
+            return "T"
+        else:
+            return "N"
+ 
     def update(self, PC, result, prediction):
-        # Actualización de estadísticas
+        # Calcular el índice de la tabla de perceptrones
+        index = int(PC) % self.size_perceptrons_table
+        # Obtener los pesos del perceptrón correspondiente
+        self.perceptron_weights = self.perceptrons_table[index]
+       
+        # Convertir "T" a 1 y "N" a -1
+        if result == "T":
+            t=1
+        else:
+            t=-1
+
+        # Verificar si se debe actualizar el peso del perceptrón
+        sing_y =1 if self.y >= 0 else -1
+        if (sing_y != t ) or (abs(self.y) <= self.threshold):
+            # Actualizar los pesos del perceptrón
+            self.perceptron_weights[0] = self.perceptron_weights[0] + t*1
+
+            for i in range(1,self.global_history_size+1):
+                self.perceptron_weights[i] +=  t * self.reg(self.global_history_table[-i])
+        # Actualizar la historia global 
+        if result == "T":
+            self.global_history_table = self.global_history_table[-self.global_history_size+1:] + "1"
+        else:
+            self.global_history_table = self.global_history_table[-self.global_history_size+1:] + "0"    
+        # Actualizar las estadísticas
+       
         if result == "T" and prediction == "T":
             self.total_taken_pred_taken += 1
         elif result == "T" and prediction == "N":
             self.total_taken_pred_not_taken += 1
         elif result == "N" and prediction == "T":
-            self.total_not_taken_pred_taken += 1
+                self.total_not_taken_pred_taken += 1
         elif result == "N" and prediction == "N":
             self.total_not_taken_pred_not_taken += 1
-    
         self.total_predictions += 1
 
-        # Actualización de pesos y sesgo si la predicción fue incorrecta
-        if result != prediction:
-            for i in range(self.num_features):
-                self.weights[i] += PC[i] if result == "T" else -PC[i]
-            self.bias += 1 if result == "T" else -1
+    def reg(self, bit):
+        if bit == "1":
+            return 1
+        elif bit == "0":
+            return -1

@@ -4,7 +4,7 @@
 - Edwin Camacho Mora B21304
 - Sixto Loría Villagra C04417
 
-## Instrucciones para correr el código de cada branch.
+## Instrucciones para correr el código de cada branch prediction.
 
 ### Para correr los codigos del P-share y del perceptron
 

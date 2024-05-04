@@ -14,8 +14,7 @@ from bimodal import *
 from gshared import *
 from pshared import *
 from perceptron import *
-from ie0521_bp import *
-
+from  PshareVSperceptron import *
 
 #Esto permite correr el programa de forma más intuitiva mediante el uso de argumentos
 parser = OptionParser()
@@ -32,7 +31,7 @@ parser.add_option("-t", dest="TRACE_FILE", default="./branch-trace-gcc.trace.gz"
 #En cada caso instanciamos el predictor y luego usamos la función print_info
 #para verificar que se esté utilizando correctamente los argumentos brindados.
 # Si --bp 0 entonces usamos el bimodal
-is_ie0521_bp = False
+is_PshareVSperceptron = False
 if options.branch_predictor_type == "0":
     branch_predictor = bimodal(int(options.bits_to_index))
     branch_predictor.print_info()
@@ -53,9 +52,9 @@ if options.branch_predictor_type == "3":
 #Si --bp 4 entonces usamos el que ustedes proponen
 if options.branch_predictor_type == "4":
     #Deben inicializar su predictor con los parámetros necesarios
-    branch_predictor = ie0521_bp(int(options.bits_to_index), int(options.global_history_size))
+    branch_predictor = PshareVSperceptron (int(options.bits_to_index), int(options.global_history_size))
     branch_predictor.print_info()
-    is_ie0521_bp = True
+    is_PshareVSperceptron = True
 
 #i = 0  #DEBUG
 #Acá abrimos el trace 
@@ -65,8 +64,8 @@ with gzip.open(options.TRACE_FILE,'rt') as trace_fh:
         #Quitamos espacios extra al final y extraemos el PC y el resultado del salto
         line = line.rstrip()
         PC,result = line.split(" ")
-        # para poder correr precitor y ubdate a la vez.
-        if is_ie0521_bp:
+
+        if is_PshareVSperceptron:
             branch_predictor.predict_and_update(PC, result)
         else:
             #Todos los predictores deben tener 2 funciones

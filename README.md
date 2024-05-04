@@ -33,6 +33,7 @@ Con este comando se seleccionan los valores correspondientes para correr correct
 el predictor propuesto considerando el margen de presupuesto de 32Kb.
 
 Nota: Recuerde siempre estar en el directorio en donde esten los archivos.
+Nota2: las pruebas fueron hechas en linux, porfavor probarlo también ahi si es posible
 
 
 

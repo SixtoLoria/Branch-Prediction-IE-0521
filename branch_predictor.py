@@ -15,7 +15,7 @@ from gshared import *
 from pshared import *
 from perceptron import *
 from ie0521_bp import *
-#from  PshareVSperceptron import *
+
 
 #Esto permite correr el programa de forma más intuitiva mediante el uso de argumentos
 parser = OptionParser()

@@ -25,7 +25,7 @@ Alterne entre esos valores según sea el caso que desee.
 Para correr el codigo propuesto que en nuestro caso es un torneo entre el P-share
 y el perceptron (P-share Vs perceptron). Intrese el siguiente comando en la terminal. 
 
-- **python3 branch_predictor.py -n 9 –bp 4 -g 7**
+- **python3 branch_predictor.py -n 9 –-bp 4 -g 7**
 
 - Para Windows usar: python branch_predictor.py -n 9 –bp 4 -g 7
 

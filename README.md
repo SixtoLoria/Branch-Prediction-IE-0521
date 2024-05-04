@@ -10,6 +10,8 @@
 
 Escriba en su terminal el comando: python3 branch_predictor.py -n 4 --bp 2 -g 2
 
+Para Windows seria usar: python branch_predictor.py -n 4 --bp 2 -g 2 
+
 Donde:
 - **-n:** Numero de Bits del PC para indexar
 - **-bp:** Predictor de saltos que desea utilizar: 2 para el P-share, 3 para el perceptron 
@@ -24,6 +26,8 @@ Para correr el codigo propuesto que en nuestro caso es un torneo entre el P-shar
 y el perceptron (P-share Vs perceptron). Intrese el siguiente comando en la terminal. 
 
 - **python3 branch_predictor.py -n 9 –bp 4 -g 7**
+
+- Para Windows usar: python branch_predictor.py -n 9 –bp 4 -g 7
 
 Con este comando se seleccionan los valores correspondientes para correr correctamente
 el predictor propuesto considerando el margen de presupuesto de 32Kb.

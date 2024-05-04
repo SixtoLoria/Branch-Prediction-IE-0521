@@ -54,7 +54,7 @@ class pshared:
         print("\t# branches tomados predichos correctamente:\t\t"+str(self.total_taken_pred_taken))
         print("\t# branches tomados predichos incorrectamente:\t\t"+str(self.total_taken_pred_not_taken))
         print("\t# branches no tomados predichos correctamente:\t\t"+str(self.total_not_taken_pred_not_taken))
-        print("\t# branches no tomados predichos incorrectamente:\t\t"+str(self.total_not_taken_pred_taken))
+        print("\t# branches no tomados predichos incorrectamente:\t"+str(self.total_not_taken_pred_taken))
         perc_correct = 100*(self.total_taken_pred_taken+self.total_not_taken_pred_not_taken)/self.total_predictions
         formatted_perc = "{:.3f}".format(perc_correct)
         print("\t% predicciones correctas:\t\t\t\t"+str(formatted_perc)+"%")

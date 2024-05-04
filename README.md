@@ -8,7 +8,7 @@
 
 ### Para correr los codigos del P-share y del perceptron
 
-Escriba en su terminal el comando: python3 branch_predictor.py -n 4 --bp 2 -g 2
+Escriba en su terminal el comando: **python3 branch_predictor.py -n 4 --bp 2 -g 2**
 
 Para Windows seria usar: python branch_predictor.py -n 4 --bp 2 -g 2 
 
@@ -33,6 +33,7 @@ Con este comando se seleccionan los valores correspondientes para correr correct
 el predictor propuesto considerando el margen de presupuesto de 32Kb.
 
 Nota: Recuerde siempre estar en el directorio en donde esten los archivos.
+Nota2: las pruebas fueron hechas en linux, porfavor probarlo también ahi si es posible
 
 
 

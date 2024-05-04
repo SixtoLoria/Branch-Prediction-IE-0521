@@ -15,7 +15,7 @@ Donde:
 - **-bp:** Predictor de saltos que desea utilizar: 2 para el P-share, 3 para el perceptron 
 - **-g:** Tamaño de la historia global
 
-Alterne entre esos valores segun sea el caso que desee.
+Alterne entre esos valores según sea el caso que desee.
 
 
 ### Para correr el código para branch predictor propuesto Ie0521 

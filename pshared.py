@@ -8,6 +8,9 @@ Grupo: 12
 """
 
 class pshared:
+    """ Clase que se encarga de definir los metodos y objetos
+        necesarios para el funcionamiento del predictor P-share     
+        """
     def __init__(self,bits_to_index, global_history_size):
         self.bits_to_index = bits_to_index                          #Bits del PC
         self.global_history_size = global_history_size              #bits de los registros de la tabla de historia global
@@ -25,7 +28,7 @@ class pshared:
         self.total_not_taken_pred_not_taken = 0
 
     def print_info(self):
-        """ Funcion que se encarga de imprimir informacion general del predictor.
+        """Funcion que se encarga de imprimir informacion general del predictor.
         
         Tales como los valores elegidos de tamaño de registros de historia y bits
         del PC de index.
@@ -39,7 +42,7 @@ class pshared:
         print("\tTamaño de la tabla de la historia global:\t" + str(self.size_global_history_table))
 
     def print_stats(self):
-        """ Funcion que se encarga de imprimir los resultados del predictor
+        """Funcion que se encarga de imprimir los resultados del predictor
         
         Imprime los resultados mas releventes como los saltos tomados, todal de predicciones,
         porcentaje de aciertos y entre otros.
@@ -92,9 +95,7 @@ class pshared:
         
         Returns
         -------
-            no retorna ningun valor por variable, solo actualiza valores.
-        
-        Esta funcion no retorna ningun valor ni recibe ningun parametro.
+            No retorna ningun valor por variable, solo actualiza valores.
         """
         index = int(PC) % self.size_of_branch_table
         branch_table_entry = self.branch_table[index]
